@@ -1,0 +1,49 @@
+:root {
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+    --primary-color: #157a2d;
+  --secondary-color: #1E3A8A;
+  --accent-color: #3B82F6;
+  --text-dark: #0F172A;
+  --text-light: #64748B;
+  --bg-light: #F8FAFC;
+  --white: #FFFFFF;
+    --text-main: #ffffff;
+  --text-muted: #9ca3af;
+  --radius: 16px;
+  --shadow: 0 20px 40px rgba(0,0,0,0.5);
+  --bg-dark: #0f0f14;
+  --bg-card: #1a1a22;
+    --bg-main: #0b0d12;
+  --bg-card: rgba(255,255,255,0.04);
+  --border-soft: rgba(255,255,255,0.08);
+  --text-main: #ffffff;
+  --text-muted: #9aa0ab;
+  --accent: #6366f1;
+  --radius-lg: 20px;
+  --radius-sm: 12px;
+}
+/* yahan apni puri purani style.css paste kar de */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Poppins', sans-serif;
+}
+
+a {
+  font-weight: 500;
+  color: #646cff;
+  text-decoration: inherit;
+}
+a:hover {
+  color: #535bf2;
+}
+
+body {
+  margin: 0;
+}
