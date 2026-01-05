@@ -1,5 +1,8 @@
 import { useRef, useState } from "react";
 
+import videoCover from "../assets/images/pexels-thirdman-7651922.jpg";
+import videoFile from "../assets/videos/6774633-uhd_3840_2160_30fps.mp4";
+
 export default function VideoSection() {
   const videoRef = useRef(null);
 
@@ -19,7 +22,7 @@ export default function VideoSection() {
           {!isPlaying && (
             <div className="video-card__cover">
               <img
-                src="/src/assets/images/pexels-thirdman-7651922.jpg"
+                src={videoCover}
                 alt="Video cover image"
               />
             </div>
@@ -52,7 +55,7 @@ export default function VideoSection() {
             style={{ display: isPlaying ? "block" : "none" }}
           >
             <source
-              src="/src/assets/videos/6774633-uhd_3840_2160_30fps.mp4"
+              src={videoFile}
               type="video/mp4"
             />
           </video>

@@ -1,4 +1,33 @@
+import React, { useState, useEffect } from 'react';
+
 export default function Footer() {
+  const [showButton, setShowButton] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 200) {
+        setShowButton(true);
+      } else {
+        setShowButton(false);
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  const scrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    });
+  };
+
+  const handleSubscribe = (e) => {
+    e.preventDefault();
+    // Newsletter subscription logic
+  };
+
   return (
     <footer className="footer">
       <div className="container">
@@ -42,10 +71,10 @@ export default function Footer() {
               No spam. You can always unsubscribe.
             </p>
 
-            <form className="newsletter-form">
+            <div className="newsletter-form">
               <input type="email" placeholder="Your Email" />
-              <button type="submit">Subscribe</button>
-            </form>
+              <button onClick={handleSubscribe}>Subscribe</button>
+            </div>
           </div>
 
         </div>
@@ -98,6 +127,22 @@ export default function Footer() {
         </div>
 
       </div>
+      
+      <div 
+        id="backToTop" 
+        className="backToTop"
+        style={{
+          opacity: showButton ? 1 : 0,
+          visibility: showButton ? 'visible' : 'hidden'
+        }}
+      >
+        <button className='button_wrap' onClick={scrollToTop} title="Back to Top">
+          <svg width="20px" height="20px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M17 15L12 10L7 15" stroke="currentcolor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+          </svg>
+        </button>
+      </div>
+    
     </footer>
   );
 }

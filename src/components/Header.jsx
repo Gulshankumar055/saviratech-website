@@ -1,4 +1,7 @@
 import { useEffect, useRef } from "react";
+import { NavLink } from "react-router-dom";
+
+import logo from "../assets/images/logo.png";
 
 export default function Header() {
   const headerRef = useRef(null);
@@ -33,6 +36,11 @@ export default function Header() {
     };
   }, []);
 
+  // mobile menu close
+  const closeMenu = () => {
+    navRef.current.classList.remove("active");
+  };
+
   return (
     <header
       className="header header--transparent"
@@ -44,32 +52,74 @@ export default function Header() {
 
           {/* LOGO */}
           <div className="header__logo">
-            <img src="/src/assets/images/logo.png" alt="Logo" />
+            <NavLink to="/" onClick={closeMenu}>
+              <img src={logo} alt="Logo" />
+            </NavLink>
           </div>
 
           {/* NAV */}
           <nav className="header__nav" id="headerNav" ref={navRef}>
             <ul className="header__menu">
               <li className="header__menu-item">
-                <a href="#" className="header__link">Home</a>
+                <NavLink
+                  to="/"
+                  end
+                  className={({ isActive }) =>
+                    isActive ? "header__link active" : "header__link"
+                  }
+                  onClick={closeMenu}
+                >
+                  Home
+                </NavLink>
               </li>
+
               <li className="header__menu-item">
-                <a href="#" className="header__link">About</a>
+                <NavLink
+                  to="/about"
+                  className={({ isActive }) =>
+                    isActive ? "header__link active" : "header__link"
+                  }
+                  onClick={closeMenu}
+                >
+                  About
+                </NavLink>
               </li>
+
               <li className="header__menu-item">
-                <a href="#" className="header__link">Services</a>
+                <NavLink
+                  to="/services"
+                  className={({ isActive }) =>
+                    isActive ? "header__link active" : "header__link"
+                  }
+                  onClick={closeMenu}
+                >
+                  Services
+                </NavLink>
               </li>
+
               <li className="header__menu-item">
-                <a href="#" className="header__link">Contact</a>
+                <NavLink
+                  to="/contact"
+                  className={({ isActive }) =>
+                    isActive ? "header__link active" : "header__link"
+                  }
+                  onClick={closeMenu}
+                >
+                  Contact
+                </NavLink>
               </li>
             </ul>
           </nav>
 
           {/* ACTIONS */}
           <div className="header__actions">
-            <a href="#" className="header__btnS btn btn-secondary">
+            <NavLink
+              to="/contact"
+              className="header__btnS btn btn-secondary"
+              onClick={closeMenu}
+            >
               Get Quote
-            </a>
+            </NavLink>
 
             <button
               className="header__toggle"

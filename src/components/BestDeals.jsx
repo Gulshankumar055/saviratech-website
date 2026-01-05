@@ -1,26 +1,31 @@
+import furnitureImg from "../assets/images/pexels-yankrukov-8867473.jpg";
+import accessoriesImg from "../assets/images/pexels-yankrukov-7693745.jpg";
+import appliancesImg from "../assets/images/pexels-yankrukov-7691715.jpg";
+import artImg from "../assets/images/pexels-thirdman-7651922.jpg";
+
 export default function BestDeals() {
   const deals = [
   {
     title: "Furniture",
-    img: "./src/assets//images/pexels-yankrukov-8867473.jpg",
+    img: furnitureImg,
     count: "6 Product",
     className: "furniture",
   },
   {
     title: "Accessories",
-    img: "./src/assets//images/pexels-yankrukov-8837716.jpg",
+    img: accessoriesImg,
     count: "12 Product",
     className: "accessories",
   },
   {
     title: "Home Appliances",
-    img: "./src/assets//images/pexels-yankrukov-7691715.jpg",
+    img: appliancesImg,
     count: "11 Product",
     className: "appliances",
   },
   {
     title: "Art & Crafts",
-    img: "./src/assets//images/pexels-thirdman-7651922.jpg",
+    img: artImg,
     count: "10 Product",
     className: "art",
   },

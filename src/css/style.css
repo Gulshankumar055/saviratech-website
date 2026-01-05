@@ -1053,10 +1053,13 @@ section.best-deals {
 }
 .section-numbers {
     padding: 60px 0;
-    background: var(--accent);
+    background: var(--bg-dark);
     color: var(--white);
 }
+select {
 
+    font-family: 'Poppins';
+}
 .section-header {
   margin-bottom: 60px;
 }
@@ -1487,16 +1490,115 @@ hr {
 .footer-bottom-links a:hover {
   color: #eee;
 }
+span {
+    display: inline-flex;
+    align-items: center;
+}
+#backToTop.show {
+    opacity: 1;
+    visibility: visible;
+}
 
-/* RESPONSIVE */
-@media (max-width: 900px) {
-  .footer-top {
-    grid-template-columns: 1fr;
+#backToTop {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    width: 50px;
+    height: 50px;
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-color) 100%);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    font-size: 24px;
+    cursor: pointer;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+footer.footer div#backToTop svg {
+    width: 30px;
+    height: 30px;
+}
+section.review-section .swiper-pagination {
+    display: none;
+}
+footer.footer div#backToTop button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    background: transparent;
+    margin: 0;
+    padding: 0;
+    border: none;
+}
+footer.footer div#backToTop svg {
+    width: 30px;
+    height: 30px;
+    color: #fff;
+}
+/*  */
+.page-hero {
+  position: relative;
+  width: 100%;
+  min-height: 520px;
+  display: flex;
+  align-items: center;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  overflow: hidden;
+}
+
+/* Gradient overlay */
+.page-hero__overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    120deg,
+    rgba(21, 122, 45, 0.85),
+    rgba(30, 58, 138, 0.85)
+  );
+}
+
+/* Content */
+.page-hero__content {
+  position: relative;
+  z-index: 2;
+  max-width: 900px;
+}
+
+.page-hero__content h1 {
+  font-size: clamp(36px, 6vw, 64px);
+  font-weight: 700;
+  color: var(--white);
+  line-height: 1.1;
+  margin-bottom: 16px;
+}
+
+.page-hero__content p {
+  font-size: 18px;
+  color: var(--text-muted);
+  max-width: 650px;
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+  .page-hero {
+    min-height: 420px;
   }
 
-  .footer-middle,
-  .footer-bottom {
-    flex-direction: column;
-    align-items: flex-start;
+  .page-hero__content h1 {
+    font-size: 34px;
+  }
+
+  .page-hero__content p {
+    font-size: 15px;
   }
 }

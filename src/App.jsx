@@ -1,3 +1,5 @@
+import { useEffect } from "react";
+
 import Header from "./components/Header";
 import HeroSlider from "./components/HeroSlider";
 import Services from "./components/Services";
@@ -11,19 +13,24 @@ import ReviewSection from "./components/ReviewSection";
 import Footer from "./components/Footer";
 
 export default function App() {
+
+  useEffect(() => {
+    // body me page name ki class
+    document.body.className = "page-home";
+  }, []);
+
   return (
     <div className="main-content">
       <Header />
-
       <HeroSlider />
-        <Services />
+      <Services />
       <Marquee />
-        <BestDeals />
-        <StatsSection />
-        <VideoSection />
-        <Herogallery />
-        <Pricing />
-        <ReviewSection />
+      <BestDeals />
+      <StatsSection />
+      <VideoSection />
+      <Herogallery />
+      <Pricing />
+      <ReviewSection />
       <Footer />
     </div>
   );
