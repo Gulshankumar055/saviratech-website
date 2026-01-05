@@ -1,0 +1,517 @@
+/* Service Plans Section */
+.service-plans-section {
+  padding: 80px 0;
+  background: var(--bg-light);
+  color: var(--text-dark);
+}
+
+.service-plans-header {
+  text-align: center;
+  margin-bottom: 60px;
+}
+
+.service-plans-title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: var(--text-dark);
+  margin-bottom: 16px;
+  position: relative;
+}
+
+.service-plans-title::after {
+  content: '';
+  position: absolute;
+  bottom: -8px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60px;
+  height: 4px;
+  background: linear-gradient(135deg, var(--primary-color) 0%, var(--accent-color) 100%);
+  border-radius: 2px;
+}
+
+.service-plans-subtitle {
+  font-size: 1.1rem;
+  color: var(--text-light);
+  max-width: 600px;
+  margin: 0 auto;
+  line-height: 1.6;
+}
+
+/* Plans Grid */
+.service-plans-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  gap: 30px;
+  margin-bottom: 60px;
+}
+
+.service-plan-card {
+  background: var(--white);
+  border-radius: var(--radius-lg);
+  padding: 40px 32px;
+  border: 2px solid #e5e7eb;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+}
+
+.service-plan-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
+  border-color: var(--primary-color);
+}
+
+.service-plan-card.popular {
+  border-color: var(--primary-color);
+  box-shadow: 0 20px 40px rgba(21, 122, 45, 0.2);
+}
+
+.service-plan-card.popular::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, var(--primary-color), var(--accent-color));
+}
+
+/* Popular Badge */
+.popular-badge {
+  position: absolute;
+  top: -14px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+  color: var(--white);
+  padding: 8px 20px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  box-shadow: 0 4px 15px rgba(21, 122, 45, 0.3);
+}
+
+.popular-badge span {
+  color: var(--white);
+}
+
+/* Plan Header */
+.plan-header {
+  text-align: center;
+  margin-bottom: 32px;
+}
+
+.plan-name {
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--text-dark);
+  margin-bottom: 16px;
+}
+
+.plan-price {
+  margin-bottom: 16px;
+}
+
+.price {
+  font-size: 48px;
+  font-weight: 800;
+  color: var(--primary-color);
+  line-height: 1;
+}
+
+.duration {
+  font-size: 16px;
+  color: var(--text-light);
+  font-weight: 500;
+}
+
+.plan-description {
+  font-size: 16px;
+  color: var(--text-light);
+  line-height: 1.6;
+}
+
+/* Plan Features */
+.plan-features {
+  margin-bottom: 40px;
+}
+
+.plan-features ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.plan-features li {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  margin-bottom: 16px;
+  font-size: 15px;
+  color: var(--text-dark);
+  line-height: 1.5;
+}
+
+.feature-icon {
+  color: var(--primary-color);
+  font-weight: bold;
+  font-size: 18px;
+  flex-shrink: 0;
+  margin-top: -2px;
+}
+
+/* Plan Footer */
+.plan-footer {
+  text-align: center;
+}
+
+.plan-footer .btn {
+  width: 100%;
+  padding: 16px 32px;
+  border-radius: 50px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-decoration: none;
+  display: inline-block;
+  border: 2px solid var(--primary-color);
+}
+
+.btn-primary {
+  background: var(--primary-color);
+  color: var(--white);
+  border-color: var(--primary-color);
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px rgba(21, 122, 45, 0.3);
+  background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+}
+
+.btn-secondary {
+  background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+  color: var(--white);
+  border-color: var(--primary-color);
+}
+
+.btn-secondary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px rgba(21, 122, 45, 0.3);
+}
+
+.btn-outline {
+  background: transparent;
+  color: var(--primary-color);
+  border-color: var(--primary-color);
+}
+
+.btn-outline:hover {
+  background: var(--primary-color);
+  color: var(--white);
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px rgba(21, 122, 45, 0.3);
+}
+
+/* Bottom CTA */
+.service-plans-bottom {
+  text-align: center;
+  margin-top: 60px;
+  padding-top: 40px;
+  border-top: 1px solid #e5e7eb;
+}
+
+.bottom-text {
+  font-size: 18px;
+  color: var(--text-light);
+  margin-bottom: 20px;
+}
+
+.contact-link {
+  color: var(--primary-color);
+  font-weight: 600;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.contact-link:hover {
+  color: var(--secondary-color);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .service-plans-section {
+    padding: 60px 0;
+  }
+
+  .service-plans-title {
+    font-size: 2rem;
+  }
+
+  .service-plans-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .service-plan-card {
+    padding: 30px 24px;
+  }
+
+  .price {
+    font-size: 36px;
+  }
+}
+
+@media (max-width: 480px) {
+  .service-plan-card {
+    padding: 24px 20px;
+  }
+
+  .plan-name {
+    font-size: 20px;
+  }
+
+  .price {
+    font-size: 32px;
+  }
+
+  .service-plans-title {
+    font-size: 1.8rem;
+  }
+}
+  padding: 40px 30px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  position: relative;
+  transition: all 0.3s ease;
+  border: 2px solid transparent;
+}
+
+.service-plan-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+}
+
+.service-plan-card.popular {
+  border-color: #667eea;
+  transform: scale(1.05);
+}
+
+.service-plan-card.popular::before {
+  content: '';
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  right: -2px;
+  bottom: -2px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 22px;
+  z-index: -1;
+}
+
+/* Popular Badge */
+.popular-badge {
+  position: absolute;
+  top: -15px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 8px 20px;
+  border-radius: 20px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+}
+
+/* Plan Header */
+.plan-header {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.plan-name {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #2d3748;
+  margin-bottom: 20px;
+}
+
+.plan-price {
+  margin-bottom: 15px;
+}
+
+.price {
+  font-size: 2.5rem;
+  font-weight: 800;
+  color: #667eea;
+  display: block;
+}
+
+.duration {
+  font-size: 0.9rem;
+  color: #718096;
+  font-weight: 500;
+}
+
+.plan-description {
+  color: #718096;
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+/* Plan Features */
+.plan-features {
+  margin-bottom: 30px;
+}
+
+.plan-features ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.plan-features li {
+  display: flex;
+  align-items: center;
+  margin-bottom: 12px;
+  font-size: 0.95rem;
+  color: #4a5568;
+}
+
+.feature-icon {
+  color: #48bb78;
+  font-weight: bold;
+  margin-right: 12px;
+  font-size: 1.1rem;
+}
+
+/* Plan Footer */
+.plan-footer {
+  text-align: center;
+}
+
+.btn {
+  padding: 14px 30px;
+  border-radius: 25px;
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: none;
+  text-decoration: none;
+  display: inline-block;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+}
+
+.btn-secondary {
+  background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+  color: white;
+  box-shadow: 0 4px 15px rgba(118, 75, 162, 0.3);
+}
+
+.btn-secondary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(118, 75, 162, 0.4);
+}
+
+.btn-outline {
+  background: transparent;
+  color: #667eea;
+  border: 2px solid #667eea;
+}
+
+.btn-outline:hover {
+  background: #667eea;
+  color: white;
+  transform: translateY(-2px);
+}
+
+/* Bottom CTA */
+.service-plans-bottom {
+  text-align: center;
+  padding-top: 40px;
+  border-top: 1px solid #e2e8f0;
+}
+
+.bottom-text {
+  color: #718096;
+  font-size: 1rem;
+  margin: 0;
+}
+
+.contact-link {
+  color: #667eea;
+  font-weight: 600;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.contact-link:hover {
+  color: #764ba2;
+  text-decoration: underline;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .service-plans-section {
+    padding: 60px 0;
+  }
+
+  .service-plans-title {
+    font-size: 2rem;
+  }
+
+  .service-plans-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .service-plan-card {
+    padding: 30px 20px;
+  }
+
+  .service-plan-card.popular {
+    transform: none;
+    order: -1;
+  }
+
+  .plan-name {
+    font-size: 1.3rem;
+  }
+
+  .price {
+    font-size: 2rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .service-plans-section {
+    padding: 40px 0;
+  }
+
+  .service-plans-title {
+    font-size: 1.8rem;
+  }
+
+  .service-plan-card {
+    padding: 25px 15px;
+  }
+
+  .btn {
+    padding: 12px 25px;
+    font-size: 0.9rem;
+  }
+}

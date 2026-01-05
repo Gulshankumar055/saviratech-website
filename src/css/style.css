@@ -335,18 +335,18 @@ min-width: 45px  !important;
 }
 
 .btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  padding: 18px 45px;
-  font-size: 15px;
-  font-weight: 600;
-  text-decoration: none;
-  border-radius: 50px;
-  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-  position: relative;
-  overflow: hidden;
-  letter-spacing: 0.5px;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 15px 35px;
+    font-size: 15px;
+    font-weight: 600;
+    text-decoration: none;
+    border-radius: 50px;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    position: relative;
+    overflow: hidden;
+    letter-spacing: 0.5px;
 }
 
 .btn-primary {
@@ -1019,10 +1019,10 @@ min-width: 45px  !important;
 
 /* Play Icon */
 .video-card__play-icon {
-  width: 30px;
-  height: 30px;
-  fill: #000;
-  margin-left: 4px;
+    width: 80px;
+    height: 80px;
+    fill: var(--primary-color);
+    margin-left: 4px;
 }
 
 /* Video */
@@ -1115,12 +1115,12 @@ select {
     padding: 5px;
 }
 .stat-number {
-  font-size: 56px;
-  font-weight: 800;
-  color: #000;
-  margin-bottom: 16px;
-  line-height: 1;
-  letter-spacing: -1px;
+    font-size: 56px;
+    font-weight: 800;
+    color: var(--primary-color);
+    margin-bottom: 16px;
+    line-height: 1;
+    letter-spacing: -1px;
 }
 
 .stat-title {
@@ -1308,10 +1308,13 @@ select {
 }
 
 .hero-section .btn-primary {
-  background: linear-gradient(135deg,#6366f1,#8b5cf6);
+  background: linear-gradient(135deg, var(--primary-color), var(--primary-color));
   color: #fff;
 }
-
+.best-deals span svg {
+    width: 40px;
+    height: 40px;
+}
 .hero-section .btn-secondary {
   border: 1px solid rgba(255,255,255,0.3);
   color: #fff;
