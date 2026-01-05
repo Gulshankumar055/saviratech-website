@@ -8,28 +8,28 @@ import "swiper/css/pagination";
 
 const reviews = [
   {
-    name: "John Doe",
+    name: "Sarah Chen",
     rating: 5,
-    text: "Amazing service! Highly recommended.",
-    avatar: "https://randomuser.me/api/portraits/men/32.jpg",
+    text: "Saviratech transformed our e-commerce platform completely. The new website increased our conversion rate by 40% and the mobile app has been a game-changer for our customers.",
+    avatar: "https://randomuser.me/api/portraits/women/32.jpg",
   },
   {
-    name: "Jane Smith",
-    rating: 4,
-    text: "Good quality products and fast delivery.",
-    avatar: "https://randomuser.me/api/portraits/women/44.jpg",
-  },
-  {
-    name: "Michael Johnson",
+    name: "David Rodriguez",
     rating: 5,
-    text: "Customer support was very helpful and responsive.",
-    avatar: "https://randomuser.me/api/portraits/men/75.jpg",
+    text: "Outstanding web development work! They delivered our custom CRM system on time and within budget. The UI/UX design is intuitive and our team productivity has improved significantly.",
+    avatar: "https://randomuser.me/api/portraits/men/44.jpg",
   },
   {
-    name: "Emma Watson",
+    name: "Lisa Thompson",
+    rating: 5,
+    text: "The digital marketing strategy they implemented boosted our online visibility tremendously. We've seen a 300% increase in qualified leads since working with Saviratech.",
+    avatar: "https://randomuser.me/api/portraits/women/75.jpg",
+  },
+  {
+    name: "Marcus Johnson",
     rating: 4,
-    text: "Great experience, will buy again!",
-    avatar: "https://randomuser.me/api/portraits/women/68.jpg",
+    text: "Professional team with excellent technical expertise. They helped us migrate our legacy system to a modern cloud-based solution. Highly recommend their consulting services.",
+    avatar: "https://randomuser.me/api/portraits/men/68.jpg",
   },
 ];
 

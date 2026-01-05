@@ -1,7 +1,11 @@
 import React, { useState, useEffect } from 'react';
+import { NavLink } from 'react-router-dom';
 
 export default function Footer() {
   const [showButton, setShowButton] = useState(false);
+  const [email, setEmail] = useState('');
+  const [message, setMessage] = useState('');
+  const [messageType, setMessageType] = useState(''); // 'success' or 'error'
 
   useEffect(() => {
     const handleScroll = () => {
@@ -23,9 +27,57 @@ export default function Footer() {
     });
   };
 
+  const validateEmail = (email) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  };
+
   const handleSubscribe = (e) => {
     e.preventDefault();
-    // Newsletter subscription logic
+
+    if (!email.trim()) {
+      setMessage('Please enter your email address');
+      setMessageType('error');
+      return;
+    }
+
+    if (!validateEmail(email)) {
+      setMessage('Please enter a valid email address');
+      setMessageType('error');
+      return;
+    }
+
+    // Check if email already exists
+    const existingEmails = JSON.parse(localStorage.getItem('newsletter_subscribers') || '[]');
+    if (existingEmails.includes(email)) {
+      setMessage('You are already subscribed to our newsletter!');
+      setMessageType('error');
+      return;
+    }
+
+    // Add email to subscribers list
+    existingEmails.push(email);
+    localStorage.setItem('newsletter_subscribers', JSON.stringify(existingEmails));
+
+    // Show success message
+    setMessage('Thank you for subscribing! Welcome to our newsletter.');
+    setMessageType('success');
+    setEmail('');
+
+    // Clear message after 5 seconds
+    setTimeout(() => {
+      setMessage('');
+      setMessageType('');
+    }, 5000);
+  };
+
+  const handleEmailChange = (e) => {
+    setEmail(e.target.value);
+    // Clear any previous messages when user starts typing
+    if (message) {
+      setMessage('');
+      setMessageType('');
+    }
   };
 
   return (
@@ -57,10 +109,10 @@ export default function Footer() {
           {/* COMPANY */}
           <div className="footer-links">
             <h4>COMPANY</h4>
-            <a href="#">Services</a>
+            <NavLink to="/services">Services</NavLink>
             <a href="#">Case Studies</a>
             <a href="#">Newsroom</a>
-            <a href="#">Contact</a>
+            <NavLink to="/contact">Contact</NavLink>
           </div>
 
           {/* NEWSLETTER */}
@@ -72,9 +124,23 @@ export default function Footer() {
             </p>
 
             <div className="newsletter-form">
-              <input type="email" placeholder="Your Email" />
-              <button onClick={handleSubscribe}>Subscribe</button>
+              <input
+                type="email"
+                placeholder="Enter your email address"
+                value={email}
+                onChange={handleEmailChange}
+                required
+              />
+              <button onClick={handleSubscribe} type="submit">
+                Subscribe
+              </button>
             </div>
+
+            {message && (
+              <div className={`newsletter-message ${messageType}`}>
+                {message}
+              </div>
+            )}
           </div>
 
         </div>
@@ -118,7 +184,7 @@ export default function Footer() {
           <p>© {new Date().getFullYear()} Saviratech. Powered by Shopify</p>
 
           <div className="footer-bottom-links">
-            <a href="#">About</a>
+            <NavLink to="/about">About</NavLink>
             <a href="#">Case Studies</a>
             <a href="#">Refund Policy</a>
             <a href="#">Privacy Policy</a>

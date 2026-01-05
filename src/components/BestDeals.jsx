@@ -6,28 +6,28 @@ import artImg from "../assets/images/pexels-thirdman-7651922.jpg";
 export default function BestDeals() {
   const deals = [
   {
-    title: "Furniture",
+    title: "Web Development",
     img: furnitureImg,
-    count: "6 Product",
-    className: "furniture",
+    count: "150+ Projects",
+    className: "web-dev",
   },
   {
-    title: "Accessories",
+    title: "Mobile Apps",
     img: accessoriesImg,
-    count: "12 Product",
-    className: "accessories",
+    count: "89+ Projects",
+    className: "mobile-apps",
   },
   {
-    title: "Home Appliances",
+    title: "E-commerce",
     img: appliancesImg,
-    count: "11 Product",
-    className: "appliances",
+    count: "200+ Stores",
+    className: "ecommerce",
   },
   {
-    title: "Art & Crafts",
+    title: "Digital Marketing",
     img: artImg,
-    count: "10 Product",
-    className: "art",
+    count: "95+ Campaigns",
+    className: "marketing",
   },
 ];
 
@@ -36,15 +36,15 @@ export default function BestDeals() {
       <div className="container">
         <div className="top">
           <div>
-            <h2>Best deals</h2>
+            <h2>Our Expertise Areas</h2>
             <p>
-              Explore our curated range of top-tier products. discover the perfect
-              fit for any occasion or lifestyle.
+              Discover our comprehensive range of digital solutions and technology services. 
+              We specialize in transforming businesses through innovative web and mobile experiences.
             </p>
           </div>
 
-          <a href="#" className="header__btnS btn btn-secondary">
-            View all categories <span>
+          <a href="/services" className="header__btnS btn btn-secondary">
+            View All Services <span>
 <svg width="20px" height="20px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
 <path d="M8 17L8 15C8 12.7909 9.79086 11 12 11L17 11" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
 <path d="M14 8L17 11L14 14" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>

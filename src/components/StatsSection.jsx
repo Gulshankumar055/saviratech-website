@@ -58,9 +58,9 @@ export default function StatsSection() {
     <section className="section-numbers">
         <div className="container"> 
       <div className="section-header"> 
-        <h2 className="section-title">Statistics and Achievements</h2>
+        <h2 className="section-title">Our Impact & Achievements</h2>
         <p className="section-description">
-          Explore the numbers, milestones that showcase our commitment to excellence.
+          Discover the numbers that showcase our dedication to delivering exceptional digital solutions and driving business success for our clients.
         </p>
       </div>
 
@@ -82,10 +82,9 @@ export default function StatsSection() {
             0
           </div>
 
-          <h3 className="stat-title">A Thirst for Variety</h3>
+          <h3 className="stat-title">Projects Delivered</h3>
           <p className="stat-description">
-            With over 24 800 unique bottles sourced from 40 different countries,
-            our store boasts one of the most diverse bottles collections in the region.
+            Successfully completed over 24,800 digital projects across web development, mobile apps, and e-commerce solutions for clients worldwide.
           </p>
         </div>
 
@@ -98,17 +97,16 @@ export default function StatsSection() {
 
           <div
             className="stat-number"
-            data-target="80"
+            data-target="98"
             data-suffix="%"
             ref={(el) => (countersRef.current[1] = el)}
           >
             0%
           </div>
 
-          <h3 className="stat-title">Sustainability</h3>
+          <h3 className="stat-title">Client Satisfaction</h3>
           <p className="stat-description">
-            We've transitioned to 80% eco-friendly packaging, reducing our carbon
-            footprint significantly.
+            98% of our clients report complete satisfaction with our services, with projects delivered on time and exceeding expectations.
           </p>
         </div>
 
@@ -121,16 +119,16 @@ export default function StatsSection() {
 
           <div
             className="stat-number"
-            data-target="10000"
+            data-target="500"
             data-suffix="+"
             ref={(el) => (countersRef.current[2] = el)}
           >
             0+
           </div>
 
-          <h3 className="stat-title">Customer Loyalty</h3>
+          <h3 className="stat-title">Active Clients</h3>
           <p className="stat-description">
-            More than 10,000 customers actively engage with our loyalty program.
+            Over 500 businesses trust us with their digital transformation, from startups to enterprise-level corporations across the globe.
           </p>
         </div>
 

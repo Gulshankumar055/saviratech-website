@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useCallback } from "react";
 import "./ChatBot.css";
 
 export default function ChatBot() {
@@ -23,34 +23,6 @@ export default function ChatBot() {
     scrollToBottom();
   }, [messages]);
 
-  const handleSendMessage = async () => {
-    if (!inputMessage.trim()) return;
-
-    const userMessage = {
-      id: messages.length + 1,
-      text: inputMessage,
-      sender: "user",
-      timestamp: new Date(),
-    };
-
-    setMessages((prev) => [...prev, userMessage]);
-    setInputMessage("");
-    setIsTyping(true);
-
-    // Simulate AI response (replace with actual API call)
-    setTimeout(() => {
-      const botResponse = generateBotResponse(inputMessage);
-      const botMessage = {
-        id: messages.length + 2,
-        text: botResponse,
-        sender: "bot",
-        timestamp: new Date(),
-      };
-      setMessages((prev) => [...prev, botMessage]);
-      setIsTyping(false);
-    }, 1000 + Math.random() * 2000); // Random delay between 1-3 seconds
-  };
-
   const generateBotResponse = (userInput) => {
     const input = userInput.toLowerCase();
 
@@ -69,6 +41,35 @@ export default function ChatBot() {
       return "Thank you for your message! Our team will get back to you soon. For immediate assistance, please call us or email us.";
     }
   };
+
+  const handleSendMessage = useCallback(async () => {
+    if (!inputMessage.trim()) return;
+
+    const userMessage = {
+      id: messages.length + 1,
+      text: inputMessage,
+      sender: "user",
+      timestamp: new Date(),
+    };
+
+    setMessages((prev) => [...prev, userMessage]);
+    setInputMessage("");
+    setIsTyping(true);
+
+    // Simulate AI response (replace with actual API call)
+    const randomDelay = 1000 + Math.random() * 2000; // Random delay between 1-3 seconds
+    setTimeout(() => {
+      const botResponse = generateBotResponse(inputMessage);
+      const botMessage = {
+        id: messages.length + 2,
+        text: botResponse,
+        sender: "bot",
+        timestamp: new Date(),
+      };
+      setMessages((prev) => [...prev, botMessage]);
+      setIsTyping(false);
+    }, randomDelay);
+  }, [inputMessage, messages.length]);
 
   const handleKeyPress = (e) => {
     if (e.key === "Enter" && !e.shiftKey) {

@@ -8,6 +8,9 @@ import "./css/style.css";
 import "./css/responsive.css";
 import "./components/ServicePlans.css";
 import "./components/ChatBot.css";
+import "./pages/Contact.css";
+import "./pages/About.css";
+import "./pages/Services.css";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>

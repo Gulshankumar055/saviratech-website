@@ -10,10 +10,10 @@ export default function Pricing() {
         {/* Heading */}
         <header className="pricing-sec__header">
           <h2 className="pricing-sec__title">
-            Simple pricing for every stage
+            Transparent Pricing for Quality Services
           </h2>
           <p className="pricing-sec__subtitle">
-            Choose a plan that grows with your business
+            Choose the perfect package for your digital transformation needs
           </p>
         </header>
 
@@ -25,7 +25,7 @@ export default function Pricing() {
             }`}
             onClick={() => setActivePlan("personal")}
           >
-            Personal
+            Web Solutions
           </button>
 
           <button
@@ -34,7 +34,7 @@ export default function Pricing() {
             }`}
             onClick={() => setActivePlan("business")}
           >
-            Business
+            Enterprise
           </button>
         </div>
 
@@ -48,40 +48,45 @@ export default function Pricing() {
 
                 {/* Card 1 */}
                 <article className="price-card">
-                  <h3 className="price-card__name">Free</h3>
-                  <p className="price-card__price">₹0</p>
+                  <h3 className="price-card__name">Basic Website</h3>
+                  <p className="price-card__price">₹15,000</p>
                   <p className="price-card__desc">
-                    For trying out the platform
+                    Perfect for small businesses and startups
                   </p>
 
                   <ul className="price-card__list">
-                    <li>Basic usage</li>
-                    <li>Limited features</li>
-                    <li>Email support</li>
+                    <li>5-page responsive website</li>
+                    <li>Mobile-friendly design</li>
+                    <li>Basic SEO setup</li>
+                    <li>Contact form integration</li>
+                    <li>3 months support</li>
                   </ul>
 
                   <button className="price-card__btn muted btn btn-primary">
-                    Current Plan
+                    Get Started
                   </button>
                 </article>
 
                 {/* Card 2 */}
                 <article className="price-card featured">
-                  <span className="price-card__tag">Recommended</span>
-                  <h3 className="price-card__name">Go</h3>
-                  <p className="price-card__price">₹0</p>
+                  <span className="price-card__tag">Most Popular</span>
+                  <h3 className="price-card__name">Professional Website</h3>
+                  <p className="price-card__price">₹35,000</p>
                   <p className="price-card__desc">
-                    Powerful tools for individuals
+                    Complete web solution with advanced features
                   </p>
 
                   <ul className="price-card__list">
-                    <li>Extended limits</li>
-                    <li>Smarter responses</li>
-                    <li>Priority support</li>
+                    <li>10-page custom website</li>
+                    <li>CMS integration</li>
+                    <li>Advanced SEO optimization</li>
+                    <li>Social media integration</li>
+                    <li>Analytics setup</li>
+                    <li>6 months support</li>
                   </ul>
 
                   <button className="price-card__btn primary btn btn-secondary">
-                    Upgrade to Go
+                    Choose Professional
                   </button>
                 </article>
 
@@ -95,22 +100,25 @@ export default function Pricing() {
               <div className="pricing-sec__grid single">
 
                 <article className="price-card featured">
-                  <span className="price-card__tag">Best for teams</span>
-                  <h3 className="price-card__name">Business</h3>
-                  <p className="price-card__price">₹2,099</p>
+                  <span className="price-card__tag">Complete Solution</span>
+                  <h3 className="price-card__name">Enterprise Package</h3>
+                  <p className="price-card__price">₹1,50,000</p>
                   <p className="price-card__desc">
-                    Advanced AI for growing teams
+                    Full digital transformation for large businesses
                   </p>
 
                   <ul className="price-card__list">
-                    <li>Unlimited usage</li>
-                    <li>Team collaboration</li>
-                    <li>SSO & security</li>
-                    <li>Dedicated support</li>
+                    <li>Custom web application</li>
+                    <li>Mobile app development</li>
+                    <li>E-commerce platform</li>
+                    <li>Digital marketing strategy</li>
+                    <li>Advanced analytics & reporting</li>
+                    <li>12 months premium support</li>
+                    <li>Dedicated project manager</li>
                   </ul>
 
                   <button className="price-card__btn primary">
-                    Get Business
+                    Contact for Enterprise
                   </button>
                 </article>
 
