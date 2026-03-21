@@ -784,6 +784,13 @@ min-width: 45px  !important;
   -webkit-text-stroke: 2px var(--primary-color);
 }
 
+.service-price {
+  color: var(--secondary-color);
+  font-size: clamp(12px, 1.5vw, 16px);
+  margin-left: 8px;
+  font-weight: 500;
+}
+
 @keyframes marqueeText {
   0% {
     transform: translateX(0);
