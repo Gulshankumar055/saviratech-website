@@ -36,17 +36,22 @@ const reviews = [
 function ReviewSection() {
   return (
     <section className="review-section">
-      <div className="review-container">
+      <div className="review-container container">
         <h2 className="review-title">Customer Reviews</h2>
 
         <Swiper
           modules={[Navigation, Pagination, Autoplay]}
           spaceBetween={30}
-          slidesPerView={2}
+          slidesPerView={1}
           navigation
           pagination={{ clickable: true }}
           autoplay={{ delay: 5000 }}
           loop
+          breakpoints={{
+            768: {
+              slidesPerView: 2,
+            },
+          }}
         >
           {reviews.map((review, index) => (
             <SwiperSlide key={index}>

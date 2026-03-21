@@ -1,128 +1,531 @@
-import { useState, useRef, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import "./ChatBot.css";
+import assistantIcon from "../assets/images/assistant-svgrepo-com.svg";
+import {
+  SERVICES,
+  findServiceByMessage,
+  findServicesByMessage,
+  buildServiceDetailsResponse,
+  buildServicesListResponse,
+  buildPricingResponse,
+  buildAllServiceDetailsResponse
+} from "../data/servicesData";
+
+const CHAT_API_URL = import.meta.env.VITE_CHAT_API_URL || "/api/chat";
+const CHAT_THREADS_KEY = "chatbot_threads";
+const CHAT_ACTIVE_THREAD_KEY = "chatbot_active_thread";
+const DEFAULT_THREAD_TITLE = "New chat";
+
+const createThread = (title) => ({
+  id: String(Date.now() + Math.floor(Math.random() * 1000)),
+  title: title || DEFAULT_THREAD_TITLE,
+  messages: [],
+  updatedAt: Date.now()
+});
+
+const buildThreadTitle = (text) => {
+  const clean = String(text || "").trim();
+  if (!clean) {
+    return DEFAULT_THREAD_TITLE;
+  }
+
+  const compact = clean.replace(/\s+/g, " ");
+  return compact.length > 34 ? `${compact.slice(0, 34)}...` : compact;
+};
+
+const getThreadDisplayTitle = (thread, fallbackLanguage = "en") => {
+  if (!thread) {
+    return DEFAULT_THREAD_TITLE;
+  }
+
+  const hasCustomTitle = thread.title && thread.title !== DEFAULT_THREAD_TITLE;
+  if (hasCustomTitle) {
+    return thread.title;
+  }
+
+  const firstUserMessage = thread.messages?.find((message) => message.sender === "user")?.text;
+  if (firstUserMessage) {
+    return buildThreadTitle(firstUserMessage, fallbackLanguage);
+  }
+
+  return DEFAULT_THREAD_TITLE;
+};
+
+const STATIC_RESPONSES = {
+  en: {
+    hello: "Hi there! 👋 How can I help you today?",
+    hi: "Hello! Welcome to Saviratech. What can I do for you?",
+    smallTalk: "I'm doing great, thanks for asking. How are you? If you want, I can also help with any business, website, app, or marketing question.",
+    capabilities:
+      "I can help with general questions, business advice, and full details of our services including price, timeline, features, and best plan.",
+    contact: "📞 You can contact us at:\n📧 Email: your@email.com\n📱 Phone: +91 XXXXX XXXXX\n💬 Or keep chatting with me for more info!",
+    help: "I can help with services, pricing, timelines, included features, and project planning. Ask anything.",
+    "thank you": "You're welcome! 😊 Is there anything else I can help with?",
+    thanks: "Happy to help! Feel free to ask more questions. 🙌",
+    bye: "Goodbye! Have a great day! 👋",
+    default:
+      "I can share complete details of every service including price, timeline, included features, best use case, and support."
+  },
+  hi: {
+    hello: "नमस्ते! 👋 आज मैं आपकी कैसे मदद कर सकता हूँ?",
+    hi: "हेलो! Saviratech में आपका स्वागत है। मैं आपकी क्या मदद कर सकता हूँ?",
+    smallTalk: "मैं बढ़िया हूँ, पूछने के लिए धन्यवाद। आप कैसे हैं? आप business, website, app या marketing के बारे में कुछ भी पूछ सकते हैं।",
+    capabilities:
+      "मैं general questions, business guidance, और हमारी services की पूरी जानकारी दे सकता हूँ जैसे price, timeline, features और best plan.",
+    contact: "📞 हमसे संपर्क करें:\n📧 ईमेल: your@email.com\n📱 फोन: +91 XXXXX XXXXX\n💬 या मुझसे और बात करें!",
+    help: "मैं services, pricing, timeline, features और project planning में मदद कर सकता हूँ। जो पूछना हो पूछिए।",
+    "thank you": "आपका स्वागत है! 😊 क्या कुछ और पूछना है?",
+    thanks: "खुशी हुई मदद करके! और सवाल पूछिए। 🙌",
+    bye: "अलविदा! आपका दिन शानदार हो! 👋",
+    default:
+      "मैं हर service की complete details दे सकता हूँ जैसे price, timeline, features, best use case और support।"
+  }
+};
+
+const TRANSLATIONS = {
+  en: {
+    title: "Chat with us",
+    placeholder: "Type your message...",
+    send: "Send",
+    clearHistory: "Clear Chat",
+    newChat: "New Chat",
+    conversation: "Conversation"
+  },
+  hi: {
+    title: "हमारे साथ चैट करें",
+    placeholder: "अपना संदेश टाइप करें...",
+    send: "भेजें",
+    clearHistory: "यह चैट साफ करें",
+    newChat: "नई चैट",
+    conversation: "चैट चुनें"
+  }
+};
 
 export default function ChatBot() {
   const [isOpen, setIsOpen] = useState(false);
-  const [messages, setMessages] = useState([
-    {
-      id: 1,
-      text: "Hello! I'm your AI assistant. How can I help you today?",
-      sender: "bot",
-      timestamp: new Date(),
-    },
-  ]);
-  const [inputMessage, setInputMessage] = useState("");
-  const [isTyping, setIsTyping] = useState(false);
-  const messagesEndRef = useRef(null);
+  const [threads, setThreads] = useState(() => {
+    try {
+      const savedThreads = localStorage.getItem(CHAT_THREADS_KEY);
+      const parsedThreads = savedThreads ? JSON.parse(savedThreads) : [];
 
-  const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+      if (Array.isArray(parsedThreads) && parsedThreads.length > 0) {
+        return parsedThreads;
+      }
+
+      return [createThread("en")];
+    } catch {
+      return [createThread("en")];
+    }
+  });
+  const [activeThreadId, setActiveThreadId] = useState(() => {
+    try {
+      return localStorage.getItem(CHAT_ACTIVE_THREAD_KEY) || "";
+    } catch {
+      return "";
+    }
+  });
+  const [input, setInput] = useState("");
+  const [isTyping, setIsTyping] = useState(false);
+  const language = "en";
+  const messagesEndRef = useRef(null);
+  const activeThread = threads.find((thread) => thread.id === activeThreadId) || threads[0];
+  const messages = React.useMemo(() => activeThread?.messages || [], [activeThread]);
+
+  const detectUserLanguage = (text) => {
+    const value = (text || "").toLowerCase();
+
+    // Devanagari script detection
+    if (/[\u0900-\u097F]/.test(value)) {
+      return "hi";
+    }
+
+    // Common Hindi/Hinglish phrases typed in English characters
+    const hinglishHints = [
+      "kya",
+      "kaise",
+      "kese",
+      "kr",
+      "kar",
+      "bta",
+      "bata",
+      "mujhe",
+      "mera",
+      "meri",
+      "aap",
+      "tum",
+      "hai",
+      "nahi",
+      "kyu",
+      "kaun",
+      "kitna",
+      "service ke bare",
+      "price kitna"
+    ];
+
+    if (hinglishHints.some((hint) => value.includes(hint))) {
+      return "hi";
+    }
+
+    return "en";
   };
 
   useEffect(() => {
-    scrollToBottom();
-  }, [messages]);
+    localStorage.setItem(CHAT_THREADS_KEY, JSON.stringify(threads));
+  }, [threads]);
 
-  const generateBotResponse = (userInput) => {
-    const input = userInput.toLowerCase();
-
-    // Simple response logic (you can replace with AI API)
-    if (input.includes("hello") || input.includes("hi")) {
-      return "Hello! Nice to meet you. How can I assist you today?";
-    } else if (input.includes("service") || input.includes("services")) {
-      return "We offer web development, mobile apps, digital marketing, and consulting services. What specific service are you interested in?";
-    } else if (input.includes("contact") || input.includes("phone")) {
-      return "You can reach us at contact@saviratech.com or call us at +1 (555) 123-4567. We'd love to hear from you!";
-    } else if (input.includes("price") || input.includes("cost")) {
-      return "Our pricing depends on the project scope. Let's discuss your requirements and I'll provide a customized quote!";
-    } else if (input.includes("thank")) {
-      return "You're welcome! Is there anything else I can help you with?";
-    } else {
-      return "Thank you for your message! Our team will get back to you soon. For immediate assistance, please call us or email us.";
+  useEffect(() => {
+    if (activeThread?.id) {
+      localStorage.setItem(CHAT_ACTIVE_THREAD_KEY, activeThread.id);
     }
+  }, [activeThread]);
+
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [messages, isTyping]);
+
+  const hasAnyKeyword = (message, keywords) => keywords.some((word) => message.includes(word));
+
+  const appendMessageToThread = (threadId, message) => {
+    setThreads((prev) =>
+      prev.map((thread) => {
+        if (thread.id !== threadId) {
+          return thread;
+        }
+
+        return {
+          ...thread,
+          messages: [...thread.messages, message],
+          updatedAt: Date.now()
+        };
+      })
+    );
   };
 
-  const handleSendMessage = useCallback(async () => {
-    if (!inputMessage.trim()) return;
+  const updateThreadTitleIfNeeded = (threadId, userText, detectedLanguage) => {
+    setThreads((prev) =>
+      prev.map((thread) => {
+        if (thread.id !== threadId) {
+          return thread;
+        }
+
+        const isUntitled =
+          thread.title === DEFAULT_THREAD_TITLE;
+
+        if (!isUntitled) {
+          return thread;
+        }
+
+        return {
+          ...thread,
+          title: buildThreadTitle(userText, detectedLanguage),
+          updatedAt: Date.now()
+        };
+      })
+    );
+  };
+
+  const startNewChat = () => {
+    const existingEmptyThread = threads.find(
+      (thread) => thread.messages.length === 0 && thread.title === DEFAULT_THREAD_TITLE
+    );
+
+    if (existingEmptyThread) {
+      setActiveThreadId(existingEmptyThread.id);
+      setInput("");
+      setIsTyping(false);
+      return;
+    }
+
+    const newThread = createThread();
+    setThreads((prev) => [newThread, ...prev]);
+    setActiveThreadId(newThread.id);
+    setInput("");
+    setIsTyping(false);
+  };
+
+  const getRuleBasedResponse = (userMessage, preferredLanguage) => {
+    const lowerMessage = userMessage.toLowerCase().trim();
+    const responseLanguage = preferredLanguage || detectUserLanguage(userMessage);
+
+    const detailWords = [
+      "detail",
+      "details",
+      "full detail",
+      "complete",
+      "explain",
+      "about",
+      "batao",
+      "btao",
+      "bataye",
+      "btaye",
+      "include",
+      "included",
+      "what is in",
+      "kya kya",
+      "sab kuch",
+      "bare",
+      "baare",
+      "ke bare",
+      "बताओ",
+      "बता",
+      "इसमें क्या"
+    ];
+
+    const allServicesWords = [
+      "all services",
+      "all service",
+      "every service",
+      "har service",
+      "sab service",
+      "sab services",
+      "sabhi services",
+      "services ke bare",
+      "services ke baare",
+      "service details"
+    ];
+
+    const matchedServices = findServicesByMessage(lowerMessage);
+
+    if (hasAnyKeyword(lowerMessage, allServicesWords)) {
+      return buildAllServiceDetailsResponse(responseLanguage);
+    }
+
+    if (matchedServices.length > 1 && hasAnyKeyword(lowerMessage, detailWords)) {
+      return matchedServices
+        .map((service) => buildServiceDetailsResponse(service, responseLanguage))
+        .join("\n\n--------------------\n\n");
+    }
+
+    if (matchedServices.length === 1) {
+      return buildServiceDetailsResponse(matchedServices[0], responseLanguage);
+    }
+
+    const serviceMatch = findServiceByMessage(lowerMessage);
+    if (serviceMatch) {
+      return buildServiceDetailsResponse(serviceMatch, responseLanguage);
+    }
+
+    const serviceWords = ["service", "services", "what do you do", "offer", "portfolio", "sev", "सेवा", "kaam", "aap kya krte", "kya offer", "what can you do"];
+    if (hasAnyKeyword(lowerMessage, serviceWords)) {
+      return buildServicesListResponse(responseLanguage);
+    }
+
+    const pricingWords = ["price", "pricing", "cost", "charges", "rate", "quote", "budget", "कीमत", "price kitna", "kitna lagega", "cost kya hogi", "kharcha"];
+    if (hasAnyKeyword(lowerMessage, pricingWords)) {
+      return buildPricingResponse(responseLanguage);
+    }
+
+    const contactWords = ["contact", "phone", "email", "call", "reach", "संपर्क", "number", "kaise contact", "address"];
+    if (hasAnyKeyword(lowerMessage, contactWords)) {
+      return STATIC_RESPONSES[responseLanguage].contact;
+    }
+
+    const helpWords = ["help", "assist", "support", "madad", "मदद", "guide", "suggest"];
+    if (hasAnyKeyword(lowerMessage, helpWords)) {
+      return STATIC_RESPONSES[responseLanguage].help;
+    }
+
+    const howAreYouWords = ["how are you", "kese ho", "kaise ho", "kya haal", "kaisa hai"];
+    if (hasAnyKeyword(lowerMessage, howAreYouWords)) {
+      return STATIC_RESPONSES[responseLanguage].smallTalk;
+    }
+
+    const capabilityWords = ["what can you do", "tum kya kar sakte", "aap kya kar sakte", "capabilities", "kya kya", "who are you"];
+    if (hasAnyKeyword(lowerMessage, capabilityWords)) {
+      return STATIC_RESPONSES[responseLanguage].capabilities;
+    }
+
+    const basicKeywords = ["hello", "hi", "thank you", "thanks", "bye", "hii", "hey"];
+    const matched = basicKeywords.find((keyword) => lowerMessage.includes(keyword));
+    if (matched) {
+      return STATIC_RESPONSES[responseLanguage][matched] || STATIC_RESPONSES[responseLanguage].default;
+    }
+
+    return `${STATIC_RESPONSES[responseLanguage].default}\n\n${buildServicesListResponse(responseLanguage)}`;
+  };
+
+  const getBotResponse = async (userMessage, preferredLanguage, recentMessages) => {
+    if (CHAT_API_URL) {
+      try {
+        const res = await fetch(CHAT_API_URL, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            message: userMessage,
+            language: preferredLanguage,
+            history: recentMessages,
+            services: SERVICES
+          })
+        });
+
+        if (res.ok) {
+          const data = await res.json();
+          if (typeof data?.reply === "string" && data.reply.trim()) {
+            return data.reply;
+          }
+        }
+      } catch {
+        // Fail silently and fallback to deterministic local responses.
+      }
+    }
+
+    return getRuleBasedResponse(userMessage, preferredLanguage);
+  };
+
+  const handleSendMessage = (e) => {
+    e.preventDefault();
+    if (!input.trim()) return;
+
+    const submittedText = input;
+    const detectedLanguage = detectUserLanguage(submittedText);
+    const targetThreadId = activeThread?.id;
+    if (!targetThreadId) {
+      return;
+    }
+
+    const recentMessages = messages.slice(-8).map((msg) => ({
+      role: msg.sender === "user" ? "user" : "assistant",
+      content: msg.text
+    }));
 
     const userMessage = {
-      id: messages.length + 1,
-      text: inputMessage,
+      id: Date.now(),
+      text: submittedText,
       sender: "user",
-      timestamp: new Date(),
+      timestamp: new Date().toLocaleTimeString(detectedLanguage === "hi" ? "hi-IN" : "en-US", {
+        hour: "2-digit",
+        minute: "2-digit"
+      })
     };
 
-    setMessages((prev) => [...prev, userMessage]);
-    setInputMessage("");
+    updateThreadTitleIfNeeded(targetThreadId, submittedText, detectedLanguage);
+    appendMessageToThread(targetThreadId, userMessage);
+    setInput("");
     setIsTyping(true);
 
-    // Simulate AI response (replace with actual API call)
-    const randomDelay = 1000 + Math.random() * 2000; // Random delay between 1-3 seconds
-    setTimeout(() => {
-      const botResponse = generateBotResponse(inputMessage);
-      const botMessage = {
-        id: messages.length + 2,
-        text: botResponse,
+    setTimeout(async () => {
+      const botResponse = {
+        id: Date.now() + 1,
+        text: await getBotResponse(submittedText, detectedLanguage, recentMessages),
         sender: "bot",
-        timestamp: new Date(),
+        timestamp: new Date().toLocaleTimeString(detectedLanguage === "hi" ? "hi-IN" : "en-US", {
+          hour: "2-digit",
+          minute: "2-digit"
+        })
       };
-      setMessages((prev) => [...prev, botMessage]);
+      appendMessageToThread(targetThreadId, botResponse);
       setIsTyping(false);
-    }, randomDelay);
-  }, [inputMessage, messages.length]);
-
-  const handleKeyPress = (e) => {
-    if (e.key === "Enter" && !e.shiftKey) {
-      e.preventDefault();
-      handleSendMessage();
-    }
+    }, 900);
   };
 
-  return (
-    <>
-      {/* Chat Button */}
-      <div className="chatbot-button" onClick={() => setIsOpen(!isOpen)}>
-        {isOpen ? (
-          <span className="close-icon"><svg width="30px" height="30px" viewBox="0 -0.5 25 25" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M6.96967 16.4697C6.67678 16.7626 6.67678 17.2374 6.96967 17.5303C7.26256 17.8232 7.73744 17.8232 8.03033 17.5303L6.96967 16.4697ZM13.0303 12.5303C13.3232 12.2374 13.3232 11.7626 13.0303 11.4697C12.7374 11.1768 12.2626 11.1768 11.9697 11.4697L13.0303 12.5303ZM11.9697 11.4697C11.6768 11.7626 11.6768 12.2374 11.9697 12.5303C12.2626 12.8232 12.7374 12.8232 13.0303 12.5303L11.9697 11.4697ZM18.0303 7.53033C18.3232 7.23744 18.3232 6.76256 18.0303 6.46967C17.7374 6.17678 17.2626 6.17678 16.9697 6.46967L18.0303 7.53033ZM13.0303 11.4697C12.7374 11.1768 12.2626 11.1768 11.9697 11.4697C11.6768 11.7626 11.6768 12.2374 11.9697 12.5303L13.0303 11.4697ZM16.9697 17.5303C17.2626 17.8232 17.7374 17.8232 18.0303 17.5303C18.3232 17.2374 18.3232 16.7626 18.0303 16.4697L16.9697 17.5303ZM11.9697 12.5303C12.2626 12.8232 12.7374 12.8232 13.0303 12.5303C13.3232 12.2374 13.3232 11.7626 13.0303 11.4697L11.9697 12.5303ZM8.03033 6.46967C7.73744 6.17678 7.26256 6.17678 6.96967 6.46967C6.67678 6.76256 6.67678 7.23744 6.96967 7.53033L8.03033 6.46967ZM8.03033 17.5303L13.0303 12.5303L11.9697 11.4697L6.96967 16.4697L8.03033 17.5303ZM13.0303 12.5303L18.0303 7.53033L16.9697 6.46967L11.9697 11.4697L13.0303 12.5303ZM11.9697 12.5303L16.9697 17.5303L18.0303 16.4697L13.0303 11.4697L11.9697 12.5303ZM13.0303 11.4697L8.03033 6.46967L6.96967 7.53033L11.9697 12.5303L13.0303 11.4697Z" fill="#fff"/>
-</svg></span>
-        ) : (
-          <span className="chat-icon"><svg width="20px" height="20px" viewBox="0 0 400 400" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M197.737 285.624C290.514 285.624 344.323 248.092 359.164 173.028C372.581 106.263 318.874 79.5184 241.496 69.053C164.118 58.5877 63.6024 63.7698 42.5718 141.053C21.5412 218.336 99.5252 252.471 116.53 256.928C133.534 261.384 123.894 334.854 132.4 334.854C140.905 334.854 163.679 290.34 173.755 285.624" stroke="currentcolor" stroke-opacity="0.9" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"/>
-</svg></span>
-        )}
-      </div>
+  const clearHistory = () => {
+    const currentThreadId = activeThread?.id;
+    if (!currentThreadId) {
+      return;
+    }
 
-      {/* Chat Window */}
+    if (threads.length > 1) {
+      const remainingThreads = threads.filter((thread) => thread.id !== currentThreadId);
+      setThreads(remainingThreads);
+      setActiveThreadId(remainingThreads[0]?.id || "");
+      return;
+    }
+
+    setThreads((prev) =>
+      prev.map((thread) => {
+        if (thread.id !== currentThreadId) {
+          return thread;
+        }
+
+        return {
+          ...thread,
+          title: DEFAULT_THREAD_TITLE,
+          messages: [],
+          updatedAt: Date.now()
+        };
+      })
+    );
+  };
+
+  const t = TRANSLATIONS[language];
+
+  return (
+    <div className="chatbot-container">
+      <button
+        className="chatbot-button"
+        onClick={() => setIsOpen(!isOpen)}
+        title={isOpen ? "Close" : "Open Chat"}
+      >
+        {isOpen ? "✕" : <img src={assistantIcon} alt="Assistant" className="chatbot-button-icon" />}
+      </button>
+
       {isOpen && (
         <div className="chatbot-window">
           <div className="chatbot-header">
-            <div className="chatbot-avatar">
-              <span>🤖</span>
-            </div>
             <div className="chatbot-info">
-              <h4>SaviRatech Assistant</h4>
-              <span className="status">● Online</span>
+              <h4>{t.title}</h4>
+              <span className="status">Online</span>
+            </div>
+            <button
+              className="close-btn"
+              onClick={() => setIsOpen(false)}
+              title="Close"
+            >
+              ✕
+            </button>
+          </div>
+
+          <div className="chat-session-controls">
+            <label htmlFor="chat-thread-select" className="thread-label">
+              {t.conversation}
+            </label>
+            <div className="thread-actions-row">
+              <select
+                id="chat-thread-select"
+                className="thread-select"
+                value={activeThread?.id || ""}
+                onChange={(e) => setActiveThreadId(e.target.value)}
+              >
+                {threads
+                  .slice()
+                  .sort((a, b) => (b.updatedAt || 0) - (a.updatedAt || 0))
+                  .map((thread) => (
+                    <option key={thread.id} value={thread.id}>
+                      {getThreadDisplayTitle(thread, language)}
+                    </option>
+                  ))}
+              </select>
+
+              <button type="button" className="new-chat-btn" onClick={startNewChat}>
+                {t.newChat}
+              </button>
             </div>
           </div>
 
           <div className="chatbot-messages">
-            {messages.map((message) => (
-              <div
-                key={message.id}
-                className={`message ${message.sender === "user" ? "user-message" : "bot-message"}`}
-              >
-                <div className="message-content">
-                  <p>{message.text}</p>
-                  <span className="message-time">
-                    {message.timestamp.toLocaleTimeString([], {
-                      hour: "2-digit",
-                      minute: "2-digit",
-                    })}
-                  </span>
-                </div>
+            {messages.length === 0 ? (
+              <div className="welcome-message">
+                <p>
+                  {language === "hi"
+                    ? "👋 स्वागत है! मुझसे कुछ भी पूछें"
+                    : "👋 Hello! Ask me anything!"}
+                </p>
               </div>
-            ))}
+            ) : (
+              messages.map((msg) => (
+                <div
+                  key={msg.id}
+                  className={`message ${msg.sender === "user" ? "user-message" : "bot-message"}`}
+                >
+                  <div className="message-content">
+                    {msg.text}
+                    <span className="message-time">{msg.timestamp}</span>
+                  </div>
+                </div>
+              ))
+            )}
 
             {isTyping && (
               <div className="message bot-message">
@@ -139,24 +542,24 @@ export default function ChatBot() {
             <div ref={messagesEndRef} />
           </div>
 
-          <div className="chatbot-input">
+          <form onSubmit={handleSendMessage} className="chatbot-input">
             <input
               type="text"
-              placeholder="Type your message..."
-              value={inputMessage}
-              onChange={(e) => setInputMessage(e.target.value)}
-              onKeyPress={handleKeyPress}
+              placeholder={t.placeholder}
+              value={input}
+              onChange={(e) => setInput(e.target.value)}
+              disabled={isTyping}
             />
-            <button
-              onClick={handleSendMessage}
-              disabled={!inputMessage.trim() || isTyping}
-              className="send-button"
-            >
-              <span>📤</span>
+            <button type="submit" className="send-button" disabled={isTyping || !input.trim()}>
+              📤
             </button>
-          </div>
+          </form>
+
+          <button className="clear-history-btn" onClick={clearHistory}>
+            {t.clearHistory}
+          </button>
         </div>
       )}
-    </>
+    </div>
   );
 }

@@ -1,3 +1,9 @@
+/* CSS Modules version - rename this file to responsive.module.css and update imports */
+
+.header--scrolled img {
+        filter: unset;
+}
+
 /* Responsive Design */
 @media (max-width:1024px) {
     .slide-title {
@@ -187,6 +193,45 @@
     padding-left: 10px;
     padding-right: 10px;
 }
+.chatbot-button {
+    bottom: 20%;
+    right: 15px;
+}
+#backToTop {
+    position: fixed;
+    bottom: 80px;
+    right: 14px;
+
+}
+ul.header__menu li.header__menu-item:first-child {
+    border-top: 1px solid;
+}
+
+ul.header__menu li.header__menu-item {
+    border-bottom: 1px solid;
+}
+.header.header--scrolled img {
+    width: 160px;
+    height: auto;
+}
+.header__actions {
+    gap: 10PX;
+}
+.hero-content {
+    padding: 25px 15px;
+}
+.contact-info-section h2 {
+    font-size: 1.5rem;
+}
+.contact-wrapper {
+    gap: 1rem;
+}
+.overlay h3 {
+    font-size: 20px;
+}
+}
+.contact-methods h2 {
+    color: #000;
 }
 
 @media (max-width: 767Px) {
@@ -203,6 +248,69 @@
 }
 .hero-slider {
     height: 70vh;
+}
+section.best-deals .grid {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    overflow: auto;
+    padding-bottom: 10px;
+}
+
+section.best-deals .grid a.card {
+    flex: 0 0 80%;
+}
+.slide-content {
+    width: 75%;
+}
+section.section-numbers .stats-grid {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    overflow: auto;
+    padding-bottom: 10px;
+}
+
+section.section-numbers .stats-grid .stat-card {
+    flex: 0 0 80%;
+}
+.home-services-grid {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    overflow: auto;
+    padding-bottom: 30px;
+}
+
+.home-services-grid .home-service-card {
+     flex: 0 0 80%; 
+}
+ul.header__menu {
+
+    flex-direction: column;
+    gap: 10px;
+}
+body.page-home:has(.header__nav.active) {
+    overflow: hidden;
+}
+.top h2 {
+    font-size: 24px;
+}
+section.best-deals a.header__btnS span {
+    display: none;
+}
+.header.header--scrolled img {
+    filter: unset;
+}
+.home-services-grid {
+    padding-left: 10px;
+}
+.top {
+    flex-direction: column;
+    row-gap: 20px;
+}
+.text-marquee {
+    padding: 13px 0;
 }
 }
 
