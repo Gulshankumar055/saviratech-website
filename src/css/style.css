@@ -756,7 +756,7 @@ min-width: 45px  !important;
 .text-marquee__inner {
   display: flex;
   width: max-content;
-  animation: marqueeText 22s linear infinite;
+  animation: marqueeText 45s linear infinite;
   will-change: transform;
 }
 
