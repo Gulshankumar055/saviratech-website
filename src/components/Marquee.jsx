@@ -17,7 +17,6 @@ export default function Marquee() {
               <line x1="20" y1="12" x2="23" y2="12" stroke="currentColor" strokeWidth="2" />
             </svg>
             <strong className="highlight">{service.title}</strong>
-            <span className="service-price"> • {service.priceLabel}</span>
           </span>
         ))}
       </div>
