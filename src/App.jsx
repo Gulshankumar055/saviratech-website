@@ -10,7 +10,6 @@ import BestDeals from "./components/BestDeals";
 import StatsSection from "./components/StatsSection";
 import VideoSection from "./components/VideoSection";
 import Herogallery from "./components/Herogallery.jsx";
-import Pricing from "./components/Pricing";
 import ReviewSection from "./components/ReviewSection";
 import Footer from "./components/Footer";
 import ChatBot from "./components/ChatBot";
@@ -39,7 +38,6 @@ export default function App() {
             <StatsSection />
             <VideoSection />
             <Herogallery />
-            <Pricing />
             <ReviewSection />
           </div>
         } />

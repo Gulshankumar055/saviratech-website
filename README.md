@@ -1,16 +1,68 @@
-# React + Vite
+# Saviratech React Website
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Run Locally
 
-Currently, two official plugins are available:
+1. Install dependencies:
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+```bash
+npm install
+```
 
-## React Compiler
+2. Create environment file:
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+```bash
+cp .env.example .env
+```
 
-## Expanding the ESLint configuration
+3. Add your OpenAI key in `.env`:
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+```env
+OPENAI_API_KEY=your_openai_api_key_here
+OPENAI_MODEL=gpt-4.1-mini
+PORT=8787
+VITE_CHAT_API_URL=/api/chat
+```
+
+4. Run frontend + AI backend together:
+
+```bash
+npm run dev:all
+```
+
+Frontend runs on Vite port and API runs on `http://localhost:8787`.
+
+## AI Chatbot Behavior
+
+- Frontend calls `/api/chat` by default.
+- During development, Vite proxy forwards `/api/*` to the backend server.
+- If API is down/unavailable, chatbot falls back to local rule-based responses, so UI does not break.
+
+## Single Source Service Data
+
+- Service details are maintained in `src/data/servicesData.js`.
+- Home Services section and chatbot both use this file.
+- Update prices/features there once, and both UI + chatbot stay in sync.
+
+## Production Deployment Checklist
+
+1. Ensure `.env` is configured on server (do not commit it).
+2. Build frontend:
+
+```bash
+npm run build
+```
+
+3. Start AI API server in production:
+
+```bash
+npm run start:api
+```
+
+4. Serve `dist/` via your hosting platform (Nginx/Apache/Vercel/Netlify etc).
+5. Route `/api/chat` to the Node backend service in production (reverse proxy).
+
+## Git Safety
+
+- `node_modules/` is ignored in `.gitignore`.
+- `.env` and secret env files are ignored.
+- `dist/` build output is ignored.

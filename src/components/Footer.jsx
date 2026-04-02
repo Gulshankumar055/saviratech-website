@@ -91,27 +91,20 @@ export default function Footer() {
           <div className="footer-about">
             <h3 className="footer-logo">Saviratech</h3>
             <p>
-              Go-to platform for CRM tools and resources: wide range of products,
-              from video lectures and professional guides to advanced tools
-              designed to streamline your workflow.
+              We help businesses grow with professional websites, custom web applications, mobile apps, and digital marketing solutions. Our goal is to deliver scalable technology that improves efficiency and increases online visibility.
             </p>
+            <div className="footer-contact">
+              <p><strong>Email:</strong> your@email.com</p>
+              <p><strong>Phone:</strong> +91 XXXXX XXXXX</p>
+            </div>
           </div>
 
-          {/* SHOP */}
+          {/* QUICK LINKS */}
           <div className="footer-links">
-            <h4>SHOP</h4>
-            <a href="#">Guides</a>
-            <a href="#">Video Lectures</a>
-            <a href="#">Collections</a>
-            <a href="#">Shop All</a>
-          </div>
-
-          {/* COMPANY */}
-          <div className="footer-links">
-            <h4>COMPANY</h4>
+            <h4>Quick Links</h4>
+            <NavLink to="/">Home</NavLink>
+            <NavLink to="/about">About</NavLink>
             <NavLink to="/services">Services</NavLink>
-            <a href="#">Case Studies</a>
-            <a href="#">Newsroom</a>
             <NavLink to="/contact">Contact</NavLink>
           </div>
 
@@ -163,7 +156,7 @@ export default function Footer() {
           </div>
 
           <div className="footer-payments">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/4/41/Visa_Logo.png" alt="Visa" />
+            <img src="https://upload.wikimedia.org/wikipedia/commons/5/5e/Visa_Inc._logo.svg" alt="Visa" />
             <img src="https://upload.wikimedia.org/wikipedia/commons/0/04/Mastercard-logo.png" alt="Mastercard" />
             <img src="https://upload.wikimedia.org/wikipedia/commons/f/fa/American_Express_logo_%282018%29.svg" alt="Amex" />
             <img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg" alt="Paypal" />
@@ -184,8 +177,6 @@ export default function Footer() {
           <p>© {new Date().getFullYear()} Saviratech. Powered by Shopify</p>
 
           <div className="footer-bottom-links">
-            <NavLink to="/about">About</NavLink>
-            <a href="#">Case Studies</a>
             <a href="#">Refund Policy</a>
             <a href="#">Privacy Policy</a>
             <a href="#">Terms Of Service</a>

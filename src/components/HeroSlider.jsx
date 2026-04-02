@@ -1,5 +1,6 @@
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Pagination, Autoplay, EffectFade } from "swiper/modules";
+import { NavLink } from "react-router-dom";
 
 import "swiper/css";
 import "swiper/css/navigation";
@@ -7,27 +8,14 @@ import "swiper/css/pagination";
 import "swiper/css/effect-fade";
 
 import slide1 from "../assets/images/pexels-fauxels-3184434.jpg";
-import slide2 from "../assets/images/pexels-gustavo-fring-7446602.jpg";
-import slide3 from "../assets/images/pexels-thirdman-7651922.jpg";
 
 const slides = [
   {
     img: slide1,
-    badge: "Premium Business Solutions",
-    title: "Transform Your Digital Presence",
-    desc: "Elevate your brand with cutting-edge technology."
-  },
-  {
-    img: slide2,
-    badge: "Innovation & Technology",
-    title: "Building Tomorrow Today",
-    desc: "Harness the power of advanced technology."
-  },
-  {
-    img: slide3,
-    badge: "Global Excellence",
-    title: "Connect With The World",
-    desc: "Expand your horizons worldwide."
+    badge: "",
+    title: "Build Powerful Digital Solutions for Your Business",
+    desc: "We help businesses grow with professional websites, custom web applications, mobile apps, and digital marketing solutions. Our goal is to deliver scalable technology that improves efficiency and increases online visibility.",
+    button: "Get Free Consultation"
   }
 ];
 
@@ -58,12 +46,12 @@ export default function HeroSlider() {
               <p className="slide-description">{slide.desc}</p>
 
               <div className="slide-buttons">
-                <a href="#" className="btn btn-primary">
-                  Get Started →
-                </a>
-                <a href="#" className="btn btn-secondary">
+                <NavLink to="/contact" className="btn btn-primary" onClick={() => window.scrollTo(0,0)}>
+                  {slide.button}
+                </NavLink>
+                <NavLink to="/services" className="btn btn-secondary" onClick={() => window.scrollTo(0,0)}>
                   Learn More
-                </a>
+                </NavLink>
               </div>
             </div>
           </SwiperSlide>
