@@ -3,7 +3,7 @@ export default function ServicePlans() {
     {
       id: 1,
       name: "Basic Plan",
-      price: "₹2,999",
+      price: "₹19,999",
       duration: "per month",
       description: "Perfect for small businesses starting their digital journey",
       features: [
@@ -21,7 +21,7 @@ export default function ServicePlans() {
     {
       id: 2,
       name: "Professional Plan",
-      price: "₹7,999",
+      price: "₹49,999",
       duration: "per month",
       description: "Ideal for growing businesses needing advanced features",
       features: [
@@ -41,7 +41,7 @@ export default function ServicePlans() {
     {
       id: 3,
       name: "Enterprise Plan",
-      price: "₹15,999",
+      price: "₹159,999",
       duration: "per month",
       description: "Complete solution for large businesses and enterprises",
       features: [
